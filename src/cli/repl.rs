@@ -169,48 +169,37 @@ pub async fn start_chat() -> Result<()> {
                 let user_message = Message::user(trimmed.to_string());
                 current_conversation.add_message(user_message);
                 
-                // Show thinking indicator
-                print!("AI: Thinking");
+                // Show static thinking indicator instead of animation
+                println!("{} {}", "AI:".yellow().bold(), "Thinking...");
                 io::stdout().flush()?;
                 
                 // Get response from agent
                 match agent.chat(&current_conversation).await {
                     Ok(response) => {
-                        // Clear the thinking indicator
-                        print!("\r");
-                        for _ in 0.."AI: Thinking".len() {
-                            print!(" ");
-                        }
-                        print!("\r");
-                        io::stdout().flush()?;
-                        
-                        // Print the response
+                        // Print the response (no need to clear previous line)
                         println!("{} {}", "AI:".green().bold(), response.content);
                         
                         // Add the response to the conversation
                         current_conversation.add_message(response);
                         
                         // Auto-save the conversation after each exchange
-                        let conv_path = config.history_path.join(format!("{}.json", current_conversation.id));
-                        if let Err(e) = current_conversation.save_to_file(&conv_path) {
-                            error!("Failed to save conversation: {}", e);
-                        }
-                        
-                        // Update the conversation list
-                        conversation_list.add_conversation(&current_conversation);
-                        if let Err(e) = conversation_list.save_to_file(&list_path) {
-                            error!("Failed to save conversation list: {}", e);
+                        // Only save periodically (every 3 messages) to reduce disk I/O
+                        if current_conversation.messages.len() % 3 == 0 {
+                            let conv_path = config.history_path.join(format!("{}.json", current_conversation.id));
+                            if let Err(e) = current_conversation.save_to_file(&conv_path) {
+                                error!("Failed to save conversation: {}", e);
+                            }
+                            
+                            // Update the conversation list
+                            conversation_list.add_conversation(&current_conversation);
+                            let list_path = config.history_path.join("conversations.json");
+                            if let Err(e) = conversation_list.save_to_file(&list_path) {
+                                error!("Failed to save conversation list: {}", e);
+                            }
                         }
                     },
                     Err(e) => {
-                        // Clear the thinking indicator
-                        print!("\r");
-                        for _ in 0.."AI: Thinking".len() {
-                            print!(" ");
-                        }
-                        print!("\r");
-                        io::stdout().flush()?;
-                        
+                        // Print the error (no need to clear previous line)
                         println!("{} Error: {}", "AI:".red().bold(), e);
                     }
                 }

@@ -6,7 +6,7 @@ use tracing::{debug, info};
 
 use crate::config::Config;
 use crate::mcp;
-use super::conversation::{Conversation, Message};
+use super::conversation::{Conversation, Message, Role};
 
 #[derive(Clone, Debug)]
 pub struct OpenAIAgent {
@@ -73,9 +73,16 @@ struct ChatCompletionUsage {
 
 impl OpenAIAgent {
     pub fn new(config: Config) -> Self {
+        // Create a client with optimal timeouts and connection pooling
+        let client = Client::builder()
+            .timeout(std::time::Duration::from_secs(30))
+            .pool_max_idle_per_host(10)
+            .build()
+            .unwrap_or_else(|_| Client::new());
+            
         Self {
             config,
-            client: Client::new(),
+            client,
         }
     }
 
@@ -88,16 +95,57 @@ impl OpenAIAgent {
                        self.config.openai_api_base_url.contains("localhost");
         let is_groq = self.config.openai_api_base_url.contains("groq");
         
+        // Only keep last 10 messages to avoid token limits and improve performance
+        let messages = if conversation.messages.len() > 11 {
+            // Always keep the system message (usually the first one)
+            let system_msg = conversation.messages.iter()
+                .find(|m| matches!(m.role, Role::System))
+                .cloned();
+                
+            // And the last 10 conversation messages
+            let recent_msgs: Vec<_> = conversation.messages.iter()
+                .filter(|m| !matches!(m.role, Role::System))
+                .rev() // reverse to get most recent first
+                .take(10) // take last 10 messages
+                .cloned()
+                .collect();
+                
+            // Combine system message (if any) with recent messages
+            let mut msgs = Vec::new();
+            if let Some(sys) = system_msg {
+                msgs.push(serde_json::json!({
+                    "role": "system",
+                    "content": sys.content
+                }));
+            }
+            
+            // Add the recent messages in correct order
+            for msg in recent_msgs.into_iter().rev() {
+                msgs.push(serde_json::json!({
+                    "role": match msg.role {
+                        Role::User => "user",
+                        Role::Assistant => "assistant",
+                        Role::System => "system",
+                    },
+                    "content": msg.content
+                }));
+            }
+            
+            msgs
+        } else {
+            conversation.to_openai_messages()
+        };
+        
         // Create the request to API
         let request = ChatCompletionRequest {
             model: self.config.openai_api_model.clone(),
-            messages: conversation.to_openai_messages(),
+            messages,
             temperature: if is_ollama { None } else { Some(0.7) },
             stream: if is_ollama { None } else { Some(false) },
             tools: if is_ollama || is_groq || !mcp_server_available { None } else { Some(self.get_tools()) },
         };
         
-        debug!("Sending chat completion request to API: {:?}", request);
+        debug!("Sending chat completion request to API");
         
         // Make the API request
         let url = format!("{}/chat/completions", self.config.openai_api_base_url);

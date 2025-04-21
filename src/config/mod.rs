@@ -50,13 +50,13 @@ impl Default for Config {
 
 impl Config {
     pub fn load() -> Result<Self> {
-        // Load environment variables from .env file
-        dotenv().ok();
+        // Load environment variables from .env file (just once)
+        let _ = dotenv();
         
         // Start with default configuration
         let mut config = Config::default();
         
-        // Override with environment variables if they exist
+        // Simply check environment variables directly - no need for caching
         if let Ok(api_key) = env::var("OPENAI_API_KEY") {
             config.openai_api_key = api_key;
         }
