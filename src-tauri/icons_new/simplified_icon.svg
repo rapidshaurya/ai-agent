@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="230" fill="url(#bgGradient)" />
+  
+  <!-- Chat bubble -->
+  <path d="M120 170C120 156.193 131.193 145 145 145H367C380.807 145 392 156.193 392 170V285C392 298.807 380.807 310 367 310H281L256 350L231 310H145C131.193 310 120 298.807 120 285V170Z" fill="white" />
+  
+  <!-- Chat dots -->
+  <circle cx="186" cy="227.5" r="16" fill="#3B82F6" />
+  <circle cx="256" cy="227.5" r="16" fill="#3B82F6" />
+  <circle cx="326" cy="227.5" r="16" fill="#3B82F6" />
+</svg> 

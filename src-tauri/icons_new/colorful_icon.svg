@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradients -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="75%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background with glow effect -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)" />
+  <circle cx="256" cy="256" r="256" fill="url(#glowGradient)" />
+  
+  <!-- Decorative circles -->
+  <circle cx="150" cy="140" r="20" fill="#F472B6" opacity="0.8" />
+  <circle cx="380" cy="170" r="15" fill="#FBBF24" opacity="0.8" />
+  <circle cx="350" cy="370" r="25" fill="#34D399" opacity="0.8" />
+  <circle cx="120" cy="320" r="18" fill="#60A5FA" opacity="0.8" />
+  
+  <!-- Main chat bubble -->
+  <path d="M130 180C130 166.193 141.193 155 155 155H357C370.807 155 382 166.193 382 180V295C382 308.807 370.807 320 357 320H271L246 360L221 320H155C141.193 320 130 308.807 130 295V180Z" fill="white" />
+  
+  <!-- Smaller decorative chat bubble -->
+  <path d="M382 230C382 223.373 387.373 218 394 218H432C438.627 218 444 223.373 444 230V260C444 266.627 438.627 272 432 272H417L408 285L399 272H394C387.373 272 382 266.627 382 260V230Z" fill="#F9FAFB" opacity="0.9" />
+  
+  <!-- Chat dots -->
+  <circle cx="186" cy="237.5" r="16" fill="#4F46E5" />
+  <circle cx="256" cy="237.5" r="16" fill="#06B6D4" />
+  <circle cx="326" cy="237.5" r="16" fill="#8B5CF6" />
+</svg> 

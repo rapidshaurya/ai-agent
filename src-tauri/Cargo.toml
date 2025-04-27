@@ -1,0 +1,32 @@
+[package]
+name = "ai-app"
+version = "0.1.0"
+description = "AI Agent desktop app with Tauri"
+authors = ["you"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1", features = [] }
+
+[dependencies]
+tauri = { version = "1", features = [ "fs-create-dir", "shell-open", "dialog-open", "fs-read-file", "fs-write-file"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1.36.0", features = ["full"] }
+reqwest = { version = "0.11.23", features = ["json"] }
+anyhow = "1.0.75"
+dotenv = "0.15.0"
+async-trait = "0.1.74"
+uuid = { version = "1.6.1", features = ["v4", "serde"] }
+chrono = { version = "0.4.31", features = ["serde"] }
+thiserror = "1.0.50"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+futures = "0.3.29"
+dirs = "5.0.1"
+
+[features]
+# This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]

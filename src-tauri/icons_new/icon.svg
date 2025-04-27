@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="20" />
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="512" cy="512" r="460" fill="url(#bgGradient)" />
+  
+  <!-- Chat bubble shadow -->
+  <path d="M240 340C240 312.386 262.386 290 290 290H734C761.614 290 784 312.386 784 340V570C784 597.614 761.614 620 734 620H562L512 700L462 620H290C262.386 620 240 597.614 240 570V340Z" fill="black" opacity="0.2" filter="url(#shadow)" />
+  
+  <!-- Chat bubble -->
+  <path d="M240 340C240 312.386 262.386 290 290 290H734C761.614 290 784 312.386 784 340V570C784 597.614 761.614 620 734 620H562L512 700L462 620H290C262.386 620 240 597.614 240 570V340Z" fill="white" />
+  
+  <!-- Chat dots -->
+  <circle cx="372" cy="455" r="32" fill="#3B82F6" />
+  <circle cx="512" cy="455" r="32" fill="#3B82F6" />
+  <circle cx="652" cy="455" r="32" fill="#3B82F6" />
+</svg> 

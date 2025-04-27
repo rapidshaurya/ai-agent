@@ -78,11 +78,6 @@ impl Config {
             config.history_path = PathBuf::from(path);
         }
         
-        // Validate required configuration
-        if config.openai_api_key.is_empty() {
-            anyhow::bail!("OPENAI_API_KEY environment variable is required");
-        }
-        
         Ok(config)
     }
 } 
